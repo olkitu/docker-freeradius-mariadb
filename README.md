@@ -68,5 +68,5 @@ INSERT INTO nas (nasname, secret) VALUES ('127.0.0.1', 'secret');
 Add user to radcheck table. Replace username `testuser` and password `testpassword` to own.
 
 ```sql
-INSERT INTO radcheck (username,attribute,op,value) VALUES ('testuser','Cleartext-Password',':=testpassword)
+INSERT INTO radcheck (username,attribute,op,value) VALUES ('testuser','Cleartext-Password',':=testpassword')
 ```
