@@ -34,18 +34,15 @@ COPY mods-available/eap /etc/raddb/mods-available
 COPY sites-available/default /etc/raddb/sites-available
 COPY radiusd.conf /etc/raddb
 
-# Fix some file permissions
-RUN chmod 640 /etc/raddb/radiusd.conf /etc/raddb/mods-available/sql /etc/raddb/mods-available/eap /etc/raddb/sites-available/default
-
-RUN cd /etc/raddb/mods-enabled/ \
-    && ln -s ../mods-available/sql sql
-
+COPY docker-entrypoint.sh /
 # Copy certificate configurations to server
 COPY certs/* /etc/raddb/certs/
 
-RUN chmod 640 /etc/raddb/certs/ca.cnf /etc/raddb/certs/server.cnf
-
-COPY docker-entrypoint.sh /
+RUN chmod 640 /etc/raddb/radiusd.conf /etc/raddb/mods-available/sql /etc/raddb/mods-available/eap /etc/raddb/sites-available/default \
+    cd /etc/raddb/mods-enabled/ \
+    && ln -s ../mods-available/sql sql \
+    chmod 640 /etc/raddb/certs/ca.cnf /etc/raddb/certs/server.cnf \
+    && chmod 700 /docker-entrypoint.sh
 
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
 CMD ["radiusd"]  

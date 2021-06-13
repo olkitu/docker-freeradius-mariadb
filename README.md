@@ -10,7 +10,7 @@ Deploy to Docker Swarm. You can optionally also use external MySQL-server.
 version: '3.7'
 services:
   freeradius:
-    image: ghcr.io/olkitu/docker-freeradius-mysql
+    image: ghcr.io/olkitu/docker-freeradius-mysql:main
       replicas: 1
       update_config:
         delay: 10s
@@ -28,6 +28,8 @@ services:
       MYSQL_PASSWORD: radius
   db:
     image: mysql
+    volumes:
+    - freeradiusdb:/var/lib/mysql
     environment:
       # Database details
       MYSQL_SERVER: db
@@ -51,6 +53,9 @@ services:
       # Passwords for Certs
       CA_PASSWORD: whatever
       SERVER_PASSWORD: whatever
+
+volumes:
+  freeradiusdb:
 ```
 
 Import database schema to MySQL-server.

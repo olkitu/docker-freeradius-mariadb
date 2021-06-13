@@ -1,7 +1,7 @@
 services:
   freeradius:
-    image: ghcr.io/olkitu/docker-freeradius-mysql
-    ports:
+    image: ghcr.io/olkitu/docker-freeradius-mysql:main
+   ports:
     - 1812:1812
     - 1813:1813
     environment:
@@ -13,6 +13,7 @@ services:
     # Mount volume to import database to MySQL on startup
     volumes:
     - ./sql:/docker-entrypoint-initdb.d
+    - freeradiusdb:/var/lib/mysql
     environment:
       # Database details
       MYSQL_SERVER: db
@@ -36,3 +37,6 @@ services:
       # Passwords for Certs
       CA_PASSWORD: whatever
       SERVER_PASSWORD: whatever
+
+volumes:
+  freeradiusdb:
