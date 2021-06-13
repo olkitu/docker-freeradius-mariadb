@@ -1,4 +1,4 @@
-FROM freeradius/freeradius-server:latest
+FROM freeradius/freeradius-server:3.0.23
 
 # Default environment variables
 ENV MYSQL_SERVER db \
@@ -39,9 +39,9 @@ COPY docker-entrypoint.sh /
 COPY certs/* /etc/raddb/certs/
 
 RUN chmod 640 /etc/raddb/radiusd.conf /etc/raddb/mods-available/sql /etc/raddb/mods-available/eap /etc/raddb/sites-available/default \
-    cd /etc/raddb/mods-enabled/ \
+    && cd /etc/raddb/mods-enabled/ \
     && ln -s ../mods-available/sql sql \
-    chmod 640 /etc/raddb/certs/ca.cnf /etc/raddb/certs/server.cnf \
+    && chmod 640 /etc/raddb/certs/ca.cnf /etc/raddb/certs/server.cnf \
     && chmod 700 /docker-entrypoint.sh
 
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
