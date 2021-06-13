@@ -1,0 +1,38 @@
+services:
+  freeradius:
+    image: ghcr.io/olkitu/docker-freeradius-mysql
+    ports:
+    - 1812:1812
+    - 1813:1813
+    environment:
+      MYSQL_DATABASE: radius
+      MYSQL_USER: radius
+      MYSQL_PASSWORD: radius
+  db:
+    image: mysql:5.7
+    # Mount volume to import database to MySQL on startup
+    volumes:
+    - ./sql:/docker-entrypoint-initdb.d
+    environment:
+      # Database details
+      MYSQL_SERVER: db
+      MYSQL_DATABASE: radius
+      MYSQL_USER: radius
+      MYSQL_PASSWORD: radius
+      # CA Certificate
+      CA_COUNTRYCODE: FI
+      CA_STATE: Uusimaa
+      CA_CITY: Helsinki
+      CA_ORGANIZATION: Example Inc
+      CA_EMAIL: test@example.org
+      CA_COMMONNAME: Example CA
+      # Server Certificate
+      SEVER_COUNTRYCODE: ${CA_COUNTRYCODE}
+      SERVER_STATE: ${CA_STATE}
+      SERVER_CITY: ${CA_CITY}
+      SERVER_ORGANIZATION: ${CA_ORGANIZATION}
+      SERVER_EMAIL: ${CA_EMAIL}
+      SERVER_COMMONNAME: radius-wifi.example.org
+      # Passwords for Certs
+      CA_PASSWORD: whatever
+      SERVER_PASSWORD: whatever

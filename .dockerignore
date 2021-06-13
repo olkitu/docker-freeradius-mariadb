@@ -1,0 +1,4 @@
+.github/
+.git/
+gitlab-ci.yml
+docker-compose*.yml
